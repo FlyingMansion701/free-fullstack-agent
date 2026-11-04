@@ -7,26 +7,26 @@ This file covers only the problems that live BETWEEN the pieces. Each piece owns
 Nothing is lost. Open a new terminal (PowerShell on Windows), go back to the toolbox folder (`cd ~/my-agent/fullstack-agent`, or on Windows `cd $HOME\my-agent\fullstack-agent`), and run:
 
 ```
-claude --continue
+opencode run --continue
 ```
 
-That reopens your most recent session with its memory intact; tell it "we got cut off, keep going with the setup." If it can't find a session to continue, run `claude "set me up"` instead: the installer starts over, finds everything already downloaded, and skips ahead instead of redoing it.
+That reopens your most recent session with its memory intact; tell it "we got cut off, keep going with the setup." If it can't find a session to continue, run `opencode run "set me up"` instead: the installer starts over, finds everything already downloaded, and skips ahead instead of redoing it.
 
-## The install command opened Claude Code, but it acts like nothing's there
+## The install command opened OpenCode, but it acts like nothing's there
 
-Then the download step failed before Claude Code started, and the error is in your terminal scrollback, right above where Claude opened. Type `/exit`, scroll up, and read it. On a Mac, a "developer tools" dialog may be waiting for an Open/Install click (that installs git; click Install and paste the command again). On Windows the command downloads a zip and needs no git, so a failure there is usually network. Fix what the message says, then paste the install command again.
+Then the download step failed before OpenCode started, and the error is in your terminal scrollback, right above where OpenCode opened. Type `/exit`, scroll up, and read it. On a Mac, a "developer tools" dialog may be waiting for an Open/Install click (that installs git; click Install and paste the command again). On Windows the command downloads a zip and needs no git, so a failure there is usually network. Fix what the message says, then paste the install command again.
 
-## Windows says "claude is not recognized," or the Claude Code install "isn't doing anything"
+## Windows says "opencode is not recognized," or the OpenCode install "isn't doing anything"
 
-Both are the same story. The Claude Code installer on Windows (the [start page](https://jaredrhod.com/start) command) downloads about 330 MB and prints nothing while it does: no progress bar, just a blinking cursor, for a few minutes, longer on slow wifi. People close the window because it looks dead, and then nothing is installed, so the next paste says `claude` is not recognized. Paste the start page command again and leave the window alone until it prints "Installation complete!" and then "All set." Then come back here and paste the install command again. It is safe to re-run: it skips the download it already did.
+Both are the same story. The OpenCode installer on Windows (the [start page](https://opencode.ai/install) command) downloads about 330 MB and prints nothing while it does: no progress bar, just a blinking cursor, for a few minutes, longer on slow wifi. People close the window because it looks dead, and then nothing is installed, so the next paste says `opencode` is not recognized. Paste the start page command again and leave the window alone until it prints "Installation complete!" and then "All set." Then come back here and paste the install command again. It is safe to re-run: it skips the download it already did.
 
 ## The Mac says "xcrun: error: invalid active developer path"
 
 Your Mac is missing Apple's Command Line Tools, which git needs. One command fixes it: run `xcode-select --install` in the same terminal, click Install on the popup, wait the few minutes it takes, then paste the install command again. This also shows up on Macs that recently upgraded macOS, because the upgrade can clear the tools; the same command puts them back.
 
-## Claude opened a welcome screen (or asked me to log in) instead of setting up
+## OpenCode opened a welcome screen (or asked me to log in) instead of setting up
 
-Then this is your first-ever launch of Claude Code, and it runs its own one-time setup before anything else can happen: pick a text style, choose "Claude account with subscription" as the sign-in method (not the Console option, that's pay-per-use developer billing), and log in through your browser. Your "set me up" from the install command didn't survive that detour. No harm done: once you're signed in, paste the install command again and the wizard starts talking.
+Then this is your first-ever launch of OpenCode, and it runs its own one-time setup before anything else can happen: pick a text style, choose "OpenCode account with subscription" as the sign-in method (not the Console option, that's pay-per-use developer billing), and log in through your browser. Your "set me up" from the install command didn't survive that detour. No harm done: once you're signed in, paste the install command again and the wizard starts talking.
 
 ## The face sits at idle while the voice talks
 
@@ -49,12 +49,12 @@ The greeting line lives in `backtalk/backtalk.json` under `"greeting"`. If it is
 
 ## My agent forgot who it is
 
-Your agent's identity lives in the `CLAUDE.md` in your HOME folder (the folder containing all the tool folders), and Claude Code only reads it when you open Claude Code IN that folder. Opening Claude Code inside one of the tool subfolders boots the tool's own instructions instead. Daily habit: work from the home folder.
+Your agent's identity lives in the `AGENTS.md` in your HOME folder (the folder containing all the tool folders), and OpenCode only reads it when you open OpenCode IN that folder. Opening OpenCode inside one of the tool subfolders boots the tool's own instructions instead. Daily habit: work from the home folder.
 
 ## I moved my agent folder somewhere else
 
-Everything is wired with paths, so a move breaks the wires. Open Claude Code in the new location and say: "read fullstack-agent/fullstack-agent.md and re-run the wiring phase." Rewiring takes a minute and touches only the config paths.
+Everything is wired with paths, so a move breaks the wires. Open OpenCode in the new location and say: "read fullstack-agent/fullstack-agent.md and re-run the wiring phase." Rewiring takes a minute and touches only the config paths.
 
 ## Updates
 
-`./fullstack-agent/update.sh` pulls every piece. Your files (your CLAUDE.md, your vault, your notes) are never inside the repos' tracked files, so updates cannot touch them. If git complains about a config file you edited (backtalk.json, ai-visualizer.json), your edit wins; keep your version.
+`./fullstack-agent/update.sh` pulls every piece. Your files (your AGENTS.md, your vault, your notes) are never inside the repos' tracked files, so updates cannot touch them. If git complains about a config file you edited (backtalk.json, ai-visualizer.json), your edit wins; keep your version.

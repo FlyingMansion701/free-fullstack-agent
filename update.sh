@@ -18,7 +18,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Pulls the newest version of every installed piece, and of this repo.
-# Your own files (your CLAUDE.md, your vault, your configs) live outside
+# Your own files (your AGENTS.md, your vault, your configs) live outside
 # the repos' tracked files, so updates never touch them. If git reports
 # a conflict on a config you edited, your edit wins; keep your version.
 
