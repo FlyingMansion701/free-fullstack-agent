@@ -11,9 +11,9 @@ It does four jobs:
      (recommended), git, and each piece's own requirements.
   2. Interviews the person about which pieces they want (memory, voice,
      face, hands) and captures the agent identity (name, personality) and
-     the notes location.
-  3. Creates the desktop shortcuts (Chat, Talk, Barehands) on each OS and
-     keeps the start / update scripts working.
+     where notes should live.
+  3. Creates the desktop shortcuts (Chat, Talk, Barehands, Update) on each
+     OS and keeps the start / update scripts working.
   4. Is safe to re-run: it never deletes or overwrites anything the person
      already has; an existing install is adopted, not replaced.
 
@@ -28,6 +28,20 @@ import sys
 from pathlib import Path
 
 PIECES = ["memory", "voice", "face", "hands"]
+
+PIECE_BLURBS = {
+    "memory": "the mind: where the agent keeps what it learns about you.",
+    "voice": "the voice: speaks out loud through your speakers or headphones.",
+    "face": "the face: a little window with a character that listens and reacts visually.",
+    "hands": "the hands: an on-screen control board you drive with your voice or mouse.",
+}
+
+PIECE_REQUIREMENTS = {
+    "memory": "Open your notes app (Obsidian) and point it at the agent's memory folder.",
+    "voice": "uv, espeak-ng, and the speech models (backtalk's own installer walks through this).",
+    "face": "Python 3 (ships with macOS and most Linux; Windows needs the py launcher - see below).",
+    "hands": "Chrome and a webcam.",
+}
 
 
 def e(msg: str) -> None:
@@ -44,9 +58,11 @@ def has(cmd: str) -> bool:
     return shutil.which(cmd) is not None
 
 
-def offer_install(label: str, hint: str) -> bool:
+def offer_install(label: str, cmd: str, hint: str) -> bool:
     """Offer to install a missing prerequisite. Returns True if the
     person chose to install (or already had it)."""
+    if has(cmd):
+        return True
     e(f"{label}: not detected.")
     answer = input(f"  Install {label} now? [y/N]: ").strip().lower()
     if answer in ("y", "yes"):
@@ -62,13 +78,15 @@ def check_prereqs() -> dict:
     state = {}
     state["git"] = has("git")
     if not state["git"]:
-        offer_install("git", "sudo apt install git / brew install git / winget install Git.Git")
+        offer_install("git", "git", "sudo apt install git / brew install git / winget install Git.Git")
     state["opencode"] = has("opencode")
     if not state["opencode"]:
-        offer_install("OpenCode", "curl -fsSL https://opencode.ai/install | sh")
+        offer_install("OpenCode", "opencode", "curl -fsSL https://opencode.ai/install | sh")
     state["ollama"] = has("ollama")
     if not state["ollama"]:
-        offer_install("Ollama (recommended, for local models)", "curl -fsSL https://ollama.com/install.sh | sh")
+        e("Ollama (recommended, for local models): not detected.")
+        e("Install it, then pull a model, for local-model operation.")
+        offer_install("Ollama", "ollama", "curl -fsSL https://ollama.com/install.sh | sh")
     state["python"] = sys.version_info >= (3, 9)
     e(f"  Python {sys.version_info.major}.{sys.version_info.minor}: "
       f"{'ok' if state['python'] else 'too old'}")
@@ -84,8 +102,10 @@ def check_prereqs() -> dict:
 
 def interview_pieces() -> dict:
     e("== fullstack-agent setup: which pieces do you want? ==")
+    e("Each piece is optional and does one job. Here's what they do in plain English:")
     chosen: dict = {}
     for piece in PIECES:
+        e(f"\n  {piece}: {PIECE_BLURBS[piece]}")
         answer = ask(f"Install the {piece} piece?", "n").lower()
         chosen[piece] = answer in ("y", "yes")
     return chosen
@@ -94,61 +114,97 @@ def interview_pieces() -> dict:
 def collect_identity() -> dict:
     e("== fullstack-agent setup: agent identity ==")
     name = ask("Agent name", "Jarvis")
-    personality = input("One line of personality (or press Enter to keep the default): ").strip()
-    return {"name": name, "personality": personality}
+    personality = ask("One line of personality", "You are their agent: calm, capable, warm.")
+    notes_dir = ask(f"Where should the agent's notes live?", str(Path.home() / name))
+    return {"name": name, "personality": personality, "notes": notes_dir}
 
 
-def notes_location(name: str) -> str:
-    return str((Path.home() / name).resolve())
+def shortcut_targets(name: str, pieces: dict) -> list:
+    """Return the shortcuts to create, in creation order.
 
-
-def write_shortcuts(name: str) -> None:
-    """Write the desktop shortcuts (Chat, Talk, Barehands) per OS.
-
-    The shortcuts just launch the start scripts the installer leaves
-    behind, so they keep working as those scripts evolve. Nothing here
-    deletes or overwrites anything the person already has.
+    Each entry: (file_name, kind) where kind is "chat", "talk", or
+    "barehands". The Update shortcut is macOS-only and added by the caller.
+    Modes whose pieces were not installed are skipped.
     """
+    targets = [("Chat", "chat")]
+    if pieces.get("voice"):
+        targets.append((f"Talk to {name}", "talk"))
+    if pieces.get("voice") and pieces.get("hands"):
+        targets.append((f"{name} barehands", "barehands"))
+    return targets
+
+
+def write_shortcuts(name: str, pieces: dict) -> list:
+    """Write the desktop shortcuts (Chat, Talk, Barehands, Update) per OS.
+
+    Existing files are never overwritten, and modes whose pieces the person
+    did not install are skipped.
+    """
+    written: list = []
+    repo = Path(__file__).resolve().parent
+    home_dir = repo.parent
+    targets = shortcut_targets(name, pieces)
     if os.name == "nt":
         desktop = Path(os.environ.get("USERPROFILE", str(Path.home()))) / "Desktop"
         desktop.mkdir(parents=True, exist_ok=True)
-        (desktop / f"Talk to {name}.bat").write_text(
-            "@echo off\n"
-            'cd /d "%~dp0.."\n'
-            'if exist "backtalk" (\n'
-            '  echo   voice: starting in this window. Close it to hang up.\n'
-            '  cd backtalk\n'
-            '  uv run python -m backtalk.main\n'
-            ')\n'
-        )
-        e(f"Shortcuts written to {desktop}: Talk to {name}.")
-        return
-    home = Path.home()
-    desktop = Path(os.environ.get("XDG_DESKTOP_DIR", str(home / "Desktop")))
+        for label, kind in targets:
+            f = desktop / f"{label}.bat"
+            if f.exists():
+                e(f"Shortcut {f.name} already exists; leaving it alone.")
+                continue
+            if kind == "chat":
+                body = "@echo off\r\ncd /d \"" + str(home_dir) + "\"\r\nopencode\r\n"
+            elif kind == "talk":
+                body = "@echo off\r\ncall \"" + str(repo) + "\\start.bat\" voice\r\n"
+            else:
+                body = "@echo off\r\ncall \"" + str(repo) + "\\start.bat\" hands\r\n"
+            f.write_bytes(body.encode("latin-1"))
+            written.append(str(f))
+        e("Shortcuts written to " + str(desktop) + ": " + (", ".join(written) if written else "(none)"))
+        return written
+    desktop = Path(os.environ.get("XDG_DESKTOP_DIR", str(Path.home() / "Desktop")))
     if not desktop.is_dir():
-        return
+        e("No desktop folder found; skipping shortcut creation.")
+        return written
     scripts = {
-        f"Chat with {name}": (
+        "Chat": (
             "#!/bin/bash\n"
             'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
-            f'cd "{home}" && exec opencode\n'
-        ),
-        f"Talk to {name}": (
-            "#!/bin/bash\n"
-            'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
-            'exec bash ~/fullstack-agent/start.sh voice\n'
-        ),
-        f"{name} barehands": (
-            "#!/bin/bash\n"
-            'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
-            'exec bash ~/fullstack-agent/start.sh hands\n'
+            'cd "' + str(home_dir) + '" && exec opencode\n'
         ),
     }
-    for fname, body in scripts.items():
-        f = desktop / f"{fname}.command"
-        f.write_text(body)
+    if pieces.get("voice"):
+        scripts[f"Talk to {name}"] = (
+            "#!/bin/bash\n"
+            'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
+            'exec bash "' + str(repo) + '/start.sh" voice\n'
+        )
+    if pieces.get("voice") and pieces.get("hands"):
+        scripts[f"{name} barehands"] = (
+            "#!/bin/bash\n"
+            'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
+            'exec bash "' + str(repo) + '/start.sh" hands\n'
+        )
+    for label, kind in targets:
+        f = desktop / f"{label}.command"
+        if f.exists():
+            e(f"Shortcut {f.name} already exists; leaving it alone.")
+            continue
+        f.write_text(scripts[label])
         f.chmod(0o755)
-    e(f"Shortcuts written to {desktop}: " + ", ".join(scripts))
+        written.append(str(f))
+    if any(pieces.values()):
+        u = desktop / f"Update {name}.command"
+        if not u.exists():
+            u.write_text(
+                "#!/bin/bash\n"
+                'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"\n'
+                'cd "' + str(repo) + '" && ./update.sh\n'
+            )
+            u.chmod(0o755)
+            written.append(str(u))
+    e("Shortcuts written to " + str(desktop) + ": " + (", ".join(written) if written else "(none)"))
+    return written
 
 
 def main() -> int:
@@ -158,13 +214,16 @@ def main() -> int:
     check_prereqs()
     pieces = interview_pieces()
     identity = collect_identity()
-    if pieces.get("memory"):
-        e(f"Notes location: {notes_location(identity['name'])}")
-    write_shortcuts(identity["name"])
+    if any(pieces.values()):
+        e("== fullstack-agent setup: piece requirements ==")
+        for piece in PIECES:
+            if pieces.get(piece):
+                e(f"  {piece}: {PIECE_REQUIREMENTS[piece]}")
+    write_shortcuts(identity["name"], pieces)
     answers = {"pieces": pieces, "identity": identity}
     out = Path.home() / ".fullstack-agent-setup.json"
     out.write_text(json.dumps(answers, indent=2) + "\n")
-    e(f"Setup answers saved to {out} (safe to re-run).")
+    e("Setup answers saved to " + str(out) + " (safe to re-run).")
     e("Done. Next: start the stack with ./start.sh (or the Desktop shortcuts).")
     return 0
 
