@@ -43,6 +43,14 @@ PIECE_REQUIREMENTS = {
     "hands": "Chrome and a webcam.",
 }
 
+# Real CLI commands worth offering to install for chosen pieces, if missing.
+PIECE_INSTALLERS = {
+    "memory": ("Obsidian (notes app)", "obsidian", "Install the notes app, then open the agent's memory folder inside it."),
+    "voice": ("backtalk voice line", "uv", "backtalk's own installer walks through uv, espeak-ng, and the speech models."),
+    "face": ("ai-visualizer (face)", "python3", "Install Python 3 (Windows: see the face's own installer for the py-launcher note)."),
+    "hands": ("barehands (hands board)", "google-chrome", "Install Chrome and a webcam for the hands board."),
+}
+
 
 def e(msg: str) -> None:
     print(msg, flush=True)
@@ -76,17 +84,18 @@ def offer_install(label: str, cmd: str, hint: str) -> bool:
 def check_prereqs() -> dict:
     e("== fullstack-agent setup: prerequisites ==")
     state = {}
+    for label, cmd, hint in (
+        ("git", "git", "sudo apt install git / brew install git / winget install Git.Git"),
+        ("OpenCode", "opencode", "curl -fsSL https://opencode.ai/install | sh"),
+        ("Ollama (recommended, for local models)", "ollama", "curl -fsSL https://ollama.com/install.sh | sh"),
+    ):
+        if has(cmd):
+            e(f"  {label}: ok")
+        else:
+            offer_install(label, cmd, hint)
     state["git"] = has("git")
-    if not state["git"]:
-        offer_install("git", "git", "sudo apt install git / brew install git / winget install Git.Git")
     state["opencode"] = has("opencode")
-    if not state["opencode"]:
-        offer_install("OpenCode", "opencode", "curl -fsSL https://opencode.ai/install | sh")
     state["ollama"] = has("ollama")
-    if not state["ollama"]:
-        e("Ollama (recommended, for local models): not detected.")
-        e("Install it, then pull a model, for local-model operation.")
-        offer_install("Ollama", "ollama", "curl -fsSL https://ollama.com/install.sh | sh")
     state["python"] = sys.version_info >= (3, 9)
     e(f"  Python {sys.version_info.major}.{sys.version_info.minor}: "
       f"{'ok' if state['python'] else 'too old'}")
@@ -106,7 +115,7 @@ def interview_pieces() -> dict:
     chosen: dict = {}
     for piece in PIECES:
         e(f"\n  {piece}: {PIECE_BLURBS[piece]}")
-        answer = ask(f"Install the {piece} piece?", "n").lower()
+        answer = input(f"Install the {piece} piece? [y/n]: ").strip().lower()
         chosen[piece] = answer in ("y", "yes")
     return chosen
 
@@ -219,6 +228,8 @@ def main() -> int:
         for piece in PIECES:
             if pieces.get(piece):
                 e(f"  {piece}: {PIECE_REQUIREMENTS[piece]}")
+                label, cmd, hint = PIECE_INSTALLERS[piece]
+                offer_install(label, cmd, hint)
     write_shortcuts(identity["name"], pieces)
     answers = {"pieces": pieces, "identity": identity}
     out = Path.home() / ".fullstack-agent-setup.json"
