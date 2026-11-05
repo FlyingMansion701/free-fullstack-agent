@@ -40,7 +40,7 @@ main() {
       echo "== $repo (wiring to updates)"
       [ -n "$CFG" ] && [ -f "$HOME_DIR/$repo/$CFG" ] && cp "$HOME_DIR/$repo/$CFG" "$HOME_DIR/$repo/$CFG.mine"
       git -C "$HOME_DIR/$repo" init -q -b main
-      git -C "$HOME_DIR/$repo" remote add origin "https://github.com/jaredrhod/$repo"
+      git -C "$HOME_DIR/$repo" remote add origin "https://github.com/FlyingMansion701/free-$repo"
       git -C "$HOME_DIR/$repo" fetch -q origin
       git -C "$HOME_DIR/$repo" reset -q --hard origin/main
       git -C "$HOME_DIR/$repo" branch -q --set-upstream-to=origin/main main

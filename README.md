@@ -18,10 +18,10 @@ That's not a demo clip. That's minute one.
 
 Four pieces, each its own open repo, each excellent alone, assembled here into one agent:
 
-- **The mind: [ai-memory-vault](https://github.com/jaredrhod/ai-memory-vault).** A real, persistent memory built on plain text files your AI reads and writes. It remembers you, your work, and every lesson, across every session, with no size ceiling.
-- **The mouth: [backtalk](https://github.com/jaredrhod/backtalk).** Hold a key, talk out loud, and your agent answers through your speakers about a second later, with all its tools and its whole personality.
-- **The face: [ai-visualizer](https://github.com/jaredrhod/ai-visualizer).** Full-screen visualizers that idle, listen, think, and speak in sync with the real conversation. Four faces ship, including the living circuit board from my videos.
-- **The hands, the optional extra: [barehands](https://github.com/jaredrhod/barehands).** Move notes and images around your screen with your bare hands through your webcam. No headset, no controllers. Opens in its own window instead of the face. Take it now or add it later by running the same install again.
+- **The mind: [ai-memory-vault](https://github.com/FlyingMansion701/free-ai-memory-vault).** A real, persistent memory built on plain text files your AI reads and writes. It remembers you, your work, and every lesson, across every session, with no size ceiling.
+- **The mouth: [backtalk](https://github.com/FlyingMansion701/free-backtalk).** Hold a key, talk out loud, and your agent answers through your speakers about a second later, with all its tools and its whole personality.
+- **The face: [ai-visualizer](https://github.com/FlyingMansion701/free-ai-visualizer).** Full-screen visualizers that idle, listen, think, and speak in sync with the real conversation. Four faces ship, including the living circuit board from my videos.
+- **The hands, the optional extra: [barehands](https://github.com/FlyingMansion701/free-barehands).** Move notes and images around your screen with your bare hands through your webcam. No headset, no controllers. Opens in its own window instead of the face. Take it now or add it later by running the same install again.
 
 Every piece is optional. The setup script asks which ones you want and explains each in plain English before you decide.
 
@@ -32,13 +32,13 @@ You need [OpenCode](https://opencode.ai/install) with a provider (a local model 
 Mac and Linux:
 
 ```
-mkdir -p ~/my-agent && cd ~/my-agent && git clone https://github.com/jaredrhod/fullstack-agent && cd fullstack-agent && python3 setup.py
+mkdir -p ~/my-agent && cd ~/my-agent && git clone https://github.com/FlyingMansion701/free-fullstack-agent && cd fullstack-agent && python3 setup.py
 ```
 
 Windows (PowerShell):
 
 ```
-$d="$env:USERPROFILE\.local\bin"; if (Test-Path "$d\opencode.exe") { $env:Path="$d;$env:Path" }; New-Item -ItemType Directory -Force -Path $HOME\my-agent | Out-Null; cd $HOME\my-agent; if (-not (Test-Path fullstack-agent\fullstack-agent.md)) { Invoke-WebRequest https://github.com/jaredrhod/fullstack-agent/archive/refs/heads/main.zip -OutFile fsa.zip; Expand-Archive fsa.zip . -Force; New-Item -ItemType Directory -Force -Path fullstack-agent | Out-Null; Get-ChildItem fullstack-agent-main -Force | Copy-Item -Destination fullstack-agent -Recurse -Force; Remove-Item fullstack-agent-main -Recurse -Force; Remove-Item fsa.zip }; cd fullstack-agent; if (Get-Command py -ErrorAction SilentlyContinue) { py -3 setup.py } else { Write-Output "Python is not installed yet. Install it first, then run the setup again." }
+$d="$env:USERPROFILE\.local\bin"; if (Test-Path "$d\opencode.exe") { $env:Path="$d;$env:Path" }; New-Item -ItemType Directory -Force -Path $HOME\my-agent | Out-Null; cd $HOME\my-agent; if (-not (Test-Path fullstack-agent\fullstack-agent.md)) { Invoke-WebRequest https://github.com/FlyingMansion701/free-fullstack-agent/archive/refs/heads/main.zip -OutFile fsa.zip; Expand-Archive fsa.zip . -Force; New-Item -ItemType Directory -Force -Path fullstack-agent | Out-Null; Get-ChildItem fullstack-agent-main -Force | Copy-Item -Destination fullstack-agent -Recurse -Force; Remove-Item fullstack-agent-main -Recurse -Force; Remove-Item fsa.zip }; cd fullstack-agent; if (Get-Command py -ErrorAction SilentlyContinue) { py -3 setup.py } else { Write-Output "Python is not installed yet. Install it first, then run the setup again." }
 ```
 
 (The Windows command downloads the toolbox as a zip on purpose, so it works on a machine with no git installed. The installer sets up git for you during setup. Safe to paste as many times as you like: it skips the download when the toolbox is already there, and if an earlier attempt died partway and left a half-finished folder, it downloads again and finishes the job rather than assuming it was already done. If it tells you OpenCode is not installed yet, do the [start page](https://opencode.ai/install) first. Heads up for that step on Windows: the OpenCode installer downloads about 330 MB and prints nothing at all while it does, so leave that window alone until it says Installation complete.)
