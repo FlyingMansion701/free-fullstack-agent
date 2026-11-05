@@ -19,7 +19,7 @@ The agent's home is the folder CONTAINING this repo. Confirm that with the perso
 
 Then look around the home folder and establish which situation you are in:
 
-- **An `AGENTS.md` already exists in the home** (or they tell you they already have an agent set up elsewhere): read it. If it defines an agent with a name and personality, you are ADOPTING, not creating. Say something like "found [name], keeping them exactly as they are," and skip every identity question later.
+- **An `AGENTS.md` already exists in the fullstack-agent folder**: read it. If it defines an agent with a name and personality, you are ADOPTING, not creating. Say something like "found [name], keeping them exactly as they are," and skip every identity question later.
 - **Nothing there:** fresh start. All questions apply.
 
 **If their agent lives somewhere else, THAT folder is the home.** Move this toolbox repo inside it, remove the now-empty my-agent folder the setup created, and proceed as an adoption. Never make a second home for an agent that already has one: a person's agent gets exactly one home, and it's the one they already built.
@@ -50,17 +50,34 @@ Then mention the optional add-on, once, without pushing it:
 
 The setup script collects every remaining answer now, so no later step ever has to ask. Skip anything Phase 0 already adopted or Phase 1 declined.
 
-1. **Their name.** You will use it in the finale.
-2. **The agent's identity** (skip entirely if adopted): the three doors from ai-memory-vault's setup. A: take Jarvis as-is, the author's own agent, personality and all. B: Jarvis's personality, renamed to whatever they want. C: build their own from scratch. Never silently pick; if they shrug, door A.
-3. **The vault** (memory piece): Obsidian's own app config (`obsidian.json`) lists every vault on the machine with its path, and reading it beats quizzing a person who may not know what they have (it lists paths only, never note contents). **No `obsidian.json` at all usually means Obsidian isn't installed. Obsidian is REQUIRED, not optional: it is how the person sees and owns their agent's memory, and the memory piece's own wizard installs it (its Part 1, with the person's OK) as part of setup. Never describe it as optional or skippable.** Vaults the registry lists get offered by name ALONGSIDE the always-present option of a brand-new vault just for this system; having a vault never implies wanting to reuse it. Whatever they pick gets pointed at, never moved, and never commented on: list the registry's vaults by name and path, flat, and say nothing about where any of them lives, even one in Documents or a cloud folder (the memory piece's wizard carries that rule and the reason). A fresh vault is created during install at `~/<their name for it>`, directly in the person's home folder next to the agent folder, and the installer says the full path out loud the moment it exists. Two promises the memory piece's wizard keeps, and this conductor never compresses away: the vault gets REGISTERED in `obsidian.json` so the person's first launch of Obsidian opens straight into it (never the welcome screen), and after creating a fresh vault the wizard says the one honest backup line (the memory lives on this one disk; the free options are in its TROUBLESHOOTING). For an adopted vault it says nothing about backup or location.
-4. **The microphone** (voice piece): push to talk (hold a key to speak, the default: the mic is closed otherwise, so room audio can never trigger the agent) or hands-free listening (always listening, no button; room audio and videos CAN trigger it, and the talk key still works as the interrupt)? Then, which key. Defaults: push to talk, the home key. They can switch modes any time by voice ("go hands free" / "push to talk mode").
-5. **The voice engine** (voice piece): ask this of EVERYONE, in the interview, with one honest sentence each; it is a real fork, not a power-user extra. Built-in: free, local, works offline, sounds decent but noticeably computer-generated (default `bm_lewis`, the British butler register). ElevenLabs: the natural, human-sounding voice, on their own ElevenLabs account (free tier auditions it; regular talking runs on the paid starter plan). Capture which they want; the account, key, and voice audition happen during that piece's setup, and the voice piece's wizard carries the whole walkthrough. Never pre-answer this one with the default: the choice is the person's, made out loud.
-6. **The default face** (face piece): board, radial, rain, or neural. Default: board, the living circuit board. They can switch any time by opening a different page.
-7. **Permissions** (voice piece): when their agent wants to do something real mid-conversation (write a file, run a command), should it ask out loud first and wait for their spoken yes or no (the default), or run fully hands-free without asking? Explain the trade in one honest sentence each way. Call it auto-approve, never "hands-free" (that word belongs to the microphone question above). Default: ask. Their answer lands in backtalk's config in Phase 4, and they can change it any time later by telling their agent (takes effect next launch), or by saying "stop asking for permission" (then "confirm") or "start asking again" in a voice session for an immediate flip.
+1. **The user's name** You will use it in the finale.
+2. **The agent's name** What the agent should be called.
+3. **The agent's identity** (skip entirely if adopted): the three doors from ai-memory-vault's setup. A: take Jarvis as-is, the author's own agent, personality and all. B: Jarvis's personality, renamed to whatever they want. C: build their own from scratch. Never silently pick; if they shrug, door A.
+4. **The vault** (memory piece): Obsidian's own app config (`obsidian.json`) lists every vault on the machine with its path, and reading it beats quizzing a person who may not know what they have (it lists paths only, never note contents). **No `obsidian.json` at all usually means Obsidian isn't installed. Obsidian is REQUIRED, not optional: it is how the person sees and owns their agent's memory, and the memory piece's own wizard installs it (its Part 1, with the person's OK) as part of setup. Never describe it as optional or skippable.** Vaults the registry lists get offered by name ALONGSIDE the always-present option of a brand-new vault just for this system; having a vault never implies wanting to reuse it. Whatever they pick gets pointed at, never moved, and never commented on: list the registry's vaults by name and path, flat, and say nothing about where any of them lives, even one in Documents or a cloud folder (the memory piece's wizard carries that rule and the reason). A fresh vault is created during install at `~/<their name for it>`, directly in the person's home folder next to the agent folder, and the installer says the full path out loud the moment it exists. Two promises the memory piece's wizard keeps, and this conductor never compresses away: the vault gets REGISTERED in `obsidian.json` so the person's first launch of Obsidian opens straight into it (never the welcome screen), and after creating a fresh vault the wizard says the one honest backup line (the memory lives on this one disk; the free options are in its TROUBLESHOOTING). For an adopted vault it says nothing about backup or location.
+5. **The microphone** (voice piece): push to talk (hold a key to speak, the default: the mic is closed otherwise, so room audio can never trigger the agent) or hands-free listening (always listening, no button; room audio and videos CAN trigger it, and the talk key still works as the interrupt)? Then, which key. Defaults: push to talk, the home key. They can switch modes any time by voice ("go hands free" / "push to talk mode").
+6. **The voice engine** (voice piece): ask this of EVERYONE, in the interview, with one honest sentence each; it is a real fork, not a power-user extra. Built-in: free, local, works offline, sounds decent but noticeably computer-generated (default `bm_lewis`, the British butler register). ElevenLabs: the natural, human-sounding voice, on their own ElevenLabs account (free tier auditions it; regular talking runs on the paid starter plan). Capture which they want; the account, key, and voice audition happen during that piece's setup, and the voice piece's wizard carries the whole walkthrough. Never pre-answer this one with the default: the choice is the person's, made out loud.
+7. **The default face** (face piece): board, radial, rain, or neural. Default: board, the living circuit board. They can switch any time by opening a different page.
+8. **Permissions** (voice piece): when their agent wants to do something real mid-conversation (write a file, run a command), should it ask out loud first and wait for their spoken yes or no (the default), or run fully hands-free without asking? Explain the trade in one honest sentence each way. Call it auto-approve, never "hands-free" (that word belongs to the microphone question above). Default: ask. Their answer lands in backtalk's config in Phase 5, and they can change it any time later by telling their agent (takes effect next launch), or by saying "stop asking for permission" (then "confirm") or "start asking again" in a voice session for an immediate flip.
 
-## Phase 3: Install the pieces
+9. **The model.** Ask whether they want the agent to run on a local model through Ollama (free, private, slower) or to use one of OpenCode's own default models. If they choose Ollama, the next phase asks which tier to use.
 
-Clone each chosen piece into the home folder as a sibling of this repo, from `github.com/jaredrhod/<name>`:
+## Phase 3: The model
+
+The agent needs something to think on. Ask the person one question: do they want to run the agent on a local model through Ollama (free, private, slower), or not — in which case default to one of OpenCode's default models?
+
+**If they want Ollama**, ask which tier:
+
+1. **Fast / low-end:** the smallest model that still supports tools and ideally thinking. Pull it with `ollama pull qwen3:0.6b`; expect the slowest replies, and keep thinking off.
+2. **Balanced:** a mid-size model for ordinary laptops. Pull it with `ollama pull qwen3:8b`.
+3. **Best free quality:** for people with a good GPU. Pull it with `ollama pull qwen3.8:27b`.
+
+Whatever tier they choose, set it in the OpenCode config as `ollama/<model>` and set the context — agent tools need far more context than Ollama's small default, so raise it (OLLAMA_CONTEXT_LENGTH / the model's context window).
+
+**If they do not want Ollama**, default to one of OpenCode's default models and this phase is done.
+
+## Phase 4: Install the pieces
+
+Clone each chosen piece into the home folder as a sibling of this repo, from `github.com/FlyingMansion701/<name>`:
 ai-memory-vault, backtalk, barehands, ai-visualizer.
 
 **The adoption exceptions, checked before each clone:**
@@ -78,7 +95,7 @@ ai-memory-vault, backtalk, barehands, ai-visualizer.
 3. **ai-visualizer** third (no dependencies; seconds).
 4. **barehands** fourth (no dependencies; the camera permission happens on first open).
 
-## Phase 4: Wire the seams
+## Phase 5: Wire the seams
 
 This part belongs to this wizard alone. Write these config values, then read each file back to confirm it landed:
 
@@ -97,21 +114,21 @@ Last wire: **make the agent the mechanic.** Append a short section to the AGENTS
 > ## You are the mechanic
 > This agent runs on open tools that live in this folder (the memory vault, backtalk, ai-visualizer, barehands). When anything breaks, acts strange, or needs changing, fixing it is YOUR job, not the person's: read the relevant tool's TROUBLESHOOTING.md and README, diagnose, and repair it yourself. Never send the person off to search the internet. If they ask how something works, explain it in plain English.
 
-## Phase 5: The first hello
+## Phase 6: The first hello
 
 The finale. From the home folder, run `./fullstack-agent/start.sh` (Windows: `fullstack-agent\start.bat`). What should happen, and what you verify:
-
+x
 1. The face's server starts and the browser opens on their chosen face, with the agent's name on it.
-2. The voice line warms up and then SPEAKS: "Hello [their name], what are we working on today?" while the face pulses with the words.
+2. The voice line warms up and then SPEAKS: "Hello [the user's name], what are we working on today?" while the face pulses with the words.
 3. Have them hold the talk key and ask their agent anything. Watch the face walk listening, thinking, speaking. First reply lands in a couple of seconds.
 
 If they skipped the voice: the face still opens, and you deliver the greeting yourself, in text, word for word. Nobody's first hello is silent.
 
 If any step fails, each repo has a `TROUBLESHOOTING.md`; work the relevant one with them instead of guessing.
 
-## Phase 6: Hand it over
+## Phase 7: Hand it over
 
-First, **shut down the finale stack you started in Phase 5**, so the launcher tests below can bind the same ports and nothing you spawned outlives setup. Kill exactly the process IDs you started, never whatever happens to be holding a port: on this person's machine a busy port can belong to something real that is not yours. Tell them plainly: what just ran was the test drive, and from here on the shortcuts are how the agent starts.
+First, **shut down the finale stack you started in Phase 6**, so the launcher tests below can bind the same ports and nothing you spawned outlives setup. Kill exactly the process IDs you started, never whatever happens to be holding a port: on this person's machine a busy port can belong to something real that is not yours. Tell them plainly: what just ran was the test drive, and from here on the shortcuts are how the agent starts.
 
 Then, **before you build anything else, make one offer.** Ask it once, plainly, in your own words, close to this:
 
