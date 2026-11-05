@@ -1,6 +1,6 @@
 # fullstack-agent: setup
 
-You are the user's OpenCode agent, and you are about to assemble a complete one: memory, voice, face, and hands. This file is the conductor. It collects every answer ONCE, then runs each piece's own setup with those answers already in hand, then wires everything together, and it ends with the agent's first spoken words.
+You are the user's OpenCode agent, and you are about to assemble a complete one: memory, voice, face, and hands. This file is the setup playbook. The setup script (`setup.py` in this folder) collects every answer ONCE, then runs each piece's own setup with those answers already in hand, then wires everything together, and it ends with the agent's first spoken words.
 
 Ground rules, binding for the whole run:
 
@@ -11,7 +11,7 @@ Ground rules, binding for the whole run:
 
 ## Phase 0: Find home, and find what already exists
 
-**Prerequisite check, before anything else: git.** On Mac and Linux the install command arrives through git, so it exists. On Windows the install command downloads this repo as a ZIP on purpose, so it works on a machine with no git at all; that means git may be missing here, and the component installs below need it. Check with `git --version`. If it's missing, ask first, never silently: "One tool before we build: git, the free program that downloads and updates all the pieces. Want me to install it for you right now?" On a clear yes: `winget install --id Git.Git -e --source winget --silent --accept-package-agreements --accept-source-agreements`, then verify it landed. One gotcha you (the AI) must handle yourself, and it applies to EVERY tool you install today, not just this one: a terminal that was already open does not see freshly installed programs. For the rest of THIS setup call anything you just installed by its full path -- git at `C:/Program Files/Git/cmd/git.exe`, and the same goes for `uv` when a component installs it, which bites exactly the same way and has caught a real install. Every terminal opened after today finds them normally. **Write paths with forward slashes throughout**: they work everywhere in both Python and Node on Windows, and they survive the trip through bash and JSON that eats backslashes.
+**Prerequisite check, before anything else: git.** On Mac and Linux the setup script arrives through git, so it exists. On Windows the setup script downloads this repo as a ZIP on purpose, so it works on a machine with no git at all; that means git may be missing here, and the component installs below need it. Check with `git --version`. If it's missing, ask first, never silently: "One tool before we build: git, the free program that downloads and updates all the pieces. Want me to install it for you right now?" On a clear yes: `winget install --id Git.Git -e --source winget --silent --accept-package-agreements --accept-source-agreements`, then verify it landed. One gotcha you (the AI) must handle yourself, and it applies to EVERY tool you install today, not just this one: a terminal that was already open does not see freshly installed programs. For the rest of THIS setup call anything you just installed by its full path -- git at `C:/Program Files/Git/cmd/git.exe`, and the same goes for `uv` when a component installs it, which bites exactly the same way and has caught a real install. Every terminal opened after today finds them normally. **Write paths with forward slashes throughout**: they work everywhere in both Python and Node on Windows, and they survive the trip through bash and JSON that eats backslashes.
 
 **Then, if this repo has no `.git` folder inside it** (it arrived as a zip): convert it into a real clone in place, so the update script can reach it forever after. Inside this folder: `git init -b main`, `git remote add origin https://github.com/jaredrhod/fullstack-agent`, `git fetch origin`, `git reset --hard origin/main`, `git branch --set-upstream-to=origin/main main`. Nothing the person sees changes; the folder just gains its connection to updates. Do this quietly and move on.
 
@@ -22,7 +22,7 @@ Then look around the home folder and establish which situation you are in:
 - **An `AGENTS.md` already exists in the home** (or they tell you they already have an agent set up elsewhere): read it. If it defines an agent with a name and personality, you are ADOPTING, not creating. Say something like "found [name], keeping them exactly as they are," and skip every identity question later.
 - **Nothing there:** fresh start. All questions apply.
 
-**If their agent lives somewhere else, THAT folder is the home.** Move this toolbox repo inside it, remove the now-empty my-agent folder the install command created, and proceed as an adoption. Never make a second home for an agent that already has one: a person's agent gets exactly one home, and it's the one they already built.
+**If their agent lives somewhere else, THAT folder is the home.** Move this toolbox repo inside it, remove the now-empty my-agent folder the setup created, and proceed as an adoption. Never make a second home for an agent that already has one: a person's agent gets exactly one home, and it's the one they already built.
 
 **Scope of that answer, precisely.** The fresh-or-existing question is about prior INSTALLS of these pieces (a voice system, a visualizer, vault software). "Brand new" binds exactly that and nothing more; it does not mean the person has no OpenCode history.
 
@@ -36,7 +36,7 @@ Also ask, in plain words: "Before this repo existed, did you ever set up a voice
 
 ## Phase 1: The menu
 
-Offer the Jarvis stack, each piece in one plain sentence. **Lead with the easy answer: "the stack" (all three) is the first option and the default.**
+The setup script offers the Jarvis stack, each piece in one plain sentence. **Lead with the easy answer: "the stack" (all three) is the first option and the default.**
 
 1. **The memory**: a filing cabinet of plain text files your AI actually reads and writes, so it remembers you, your work, and every lesson across every session.
 2. **The voice**: hold a key, say the thing out loud, and your agent answers through your speakers about a second later.
@@ -48,7 +48,7 @@ Then mention the optional add-on, once, without pushing it:
 
 ## Phase 2: The one interview
 
-Collect every remaining answer now, so no later step ever has to ask. Skip anything Phase 0 already adopted or Phase 1 declined.
+The setup script collects every remaining answer now, so no later step ever has to ask. Skip anything Phase 0 already adopted or Phase 1 declined.
 
 1. **Their name.** You will use it in the finale.
 2. **The agent's identity** (skip entirely if adopted): the three doors from ai-memory-vault's setup. A: take Jarvis as-is, the author's own agent, personality and all. B: Jarvis's personality, renamed to whatever they want. C: build their own from scratch. Never silently pick; if they shrug, door A.
