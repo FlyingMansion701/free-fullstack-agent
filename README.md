@@ -1,5 +1,7 @@
 # fullstack-agent
 
+**Forked from jaredrhod/fullstack-agent under AGPL-3.0 — this is the free fork: [`FlyingMansion701/free-fullstack-agent`](https://github.com/FlyingMansion701/free-fullstack-agent).**
+
 > **Never used OpenCode?** Start at [jaredrhod.com](https://jaredrhod.com): pick your situation and it routes you to the right path.
 
 **Runs on:** OpenCode only; the installer itself is a Python setup script (`setup.py`). The $20 Pro plan is enough; a local model through Ollama keeps it free.
@@ -13,6 +15,10 @@ Not an agent that writes full-stack code. **An agent that HAS a full stack: memo
 **Nine minutes shows you everything you're about to get** (the voice, the face, the memory, and the hands): the tour video above, straight from my own desk.
 
 That's not a demo clip. That's minute one.
+
+## What changed in this fork
+
+- Replaced the Claude Code wizard/installer flow with the Python setup script (`setup.py` + `setup.sh` + `setup.bat`); retargeted the conductor wizard, README, troubleshooting, and update script from Claude Code to OpenCode; retargeted setup commands to the OpenCode setup script.
 
 ## What you get
 
