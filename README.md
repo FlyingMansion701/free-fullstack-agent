@@ -2,6 +2,8 @@
 
 **Forked from jaredrhod/fullstack-agent under AGPL-3.0 — this is the free fork: [`FlyingMansion701/free-fullstack-agent`](https://github.com/FlyingMansion701/free-fullstack-agent).**
 
+**Original author:** Jared Rhodenizer — his Discord, his site ([jaredrhod.com](https://jaredrhod.com)), and his Ko-fi belong to the original project, not to this free fork; this fork is not endorsed by him.
+
 > **Never used OpenCode?** Start at [jaredrhod.com](https://jaredrhod.com): pick your situation and it routes you to the right path.
 
 **Runs on:** OpenCode only; the installer itself is a Python setup script (`setup.py`). The $20 Pro plan is enough; a local model through Ollama keeps it free.
