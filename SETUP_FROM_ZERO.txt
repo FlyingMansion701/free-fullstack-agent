@@ -1,0 +1,46 @@
+fullstack-agent — setup from zero
+=================================
+
+Free Jarvis stack, set up from nothing. Follow these steps in order; don't skip ahead.
+
+Why it's free: the agent runs on a local model through Ollama on your own machine. No subscription. That is step 1.
+
+0. Pick your Ollama tier (optional, default: fast/low-end).
+   When the setup asks which tier to use: fast / low-end, balanced, or best free quality.
+   Fast / low-end: `ollama pull qwen3:0.6b` — expect the slowest replies; keep thinking off.
+   Balanced: `ollama pull qwen3:8b`.
+   Best free quality: `ollama pull qwen3.8:27b`.
+
+1. Install Ollama (this is what makes it truly free).
+   Mac/Linux:  curl -fsSL https://ollama.com/install.sh | sh
+   Windows:    install from https://ollama.com (or `winget install Ollama.Ollama`), then open a new terminal.
+   Then pull a model:  ollama pull llama3.2:3b
+
+2. Install OpenCode.
+   Mac/Linux:  curl -fsSL https://opencode.ai/install | sh
+   Windows:    the start-page command from https://opencode.ai/install (downloads the installer; about 330 MB, no progress bar, leave the window alone until it prints "Installation complete!" and "All set.")
+
+3. Install git and Python.
+   Mac/Linux: git (macOS offers to install it the first time you use it); Python 3 ships with macOS.
+   Windows: Python — the name `python` there is often a Microsoft Store placeholder that passes a check and then exits without running; use the py launcher (`py -3 setup.py`) or install Python 3 for real.
+
+4. Get the stack and run the setup.
+   Mac/Linux:
+     mkdir -p ~/my-agent && cd ~/my-agent && git clone https://github.com/FlyingMansion701/free-fullstack-agent && cd fullstack-agent && python3 setup.py
+   Windows (PowerShell):
+     ...download the toolbox zip from the start page / run the setup bootstrap; then `py -3 setup.py`.
+
+5. Run the setup; finish with a working AI that speaks first.
+   The setup script checks/offers installs, interviews you on the pieces, captures your agent's name/personality/notes, writes the Desktop shortcuts, and saves its answers.
+   Then start the stack: `./fullstack-agent/start.sh` (Mac/Linux) or `fullstack-agent\start.bat` (Windows).
+   The agent should open with: "Hello <you>, what are we working on today?"
+
+6. Troubleshooting for common problems.
+   - Closed the window mid-setup: reopen terminal, `opencode run --continue`, or run `python3 setup.py` to restart.
+   - Setup couldn't get OpenCode running: read the error above where the setup stopped; fix; re-run.
+   - Windows says "opencode is not recognized" / install not doing anything: re-run the start-page command; wait for "Installation complete!".
+   - Mac says "xcrun: error: invalid active developer path": run `xcode-select --install`.
+   - OpenCode opened a welcome screen or asked to log in: sign in, then run the setup again.
+   - Between pieces: each repo has its own TROUBLESHOOTING.md; the conductor points at the right one.
+
+After setup: the Desktop shortcuts are the agent. Chat / Talk / Barehands. Updates: `./fullstack-agent/update.sh` (Mac/Linux) or ask your agent to update (Windows).
