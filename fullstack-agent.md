@@ -77,7 +77,7 @@ Whatever tier they choose, set it in the OpenCode config as `ollama/<model>` and
 
 ## Phase 4: Install the pieces
 
-Clone each chosen piece into the home folder as a sibling of this repo, from `github.com/FlyingMansion701/<name>`:
+Clone each chosen piece into the home folder as a sibling of this repo, from `github.com/FlyingMansion701/free-<name>`:
 ai-memory-vault, backtalk, barehands, ai-visualizer.
 
 **The adoption exceptions, checked before each clone:**
@@ -117,7 +117,6 @@ Last wire: **make the agent the mechanic.** Append a short section to the AGENTS
 ## Phase 6: The first hello
 
 The finale. From the home folder, run `./fullstack-agent/start.sh` (Windows: `fullstack-agent\start.bat`). What should happen, and what you verify:
-x
 1. The face's server starts and the browser opens on their chosen face, with the agent's name on it.
 2. The voice line warms up and then SPEAKS: "Hello [the user's name], what are we working on today?" while the face pulses with the words.
 3. Have them hold the talk key and ask their agent anything. Watch the face walk listening, thinking, speaking. First reply lands in a couple of seconds.
@@ -129,14 +128,6 @@ If any step fails, each repo has a `TROUBLESHOOTING.md`; work the relevant one w
 ## Phase 7: Hand it over
 
 First, **shut down the finale stack you started in Phase 6**, so the launcher tests below can bind the same ports and nothing you spawned outlives setup. Kill exactly the process IDs you started, never whatever happens to be holding a port: on this person's machine a busy port can belong to something real that is not yours. Tell them plainly: what just ran was the test drive, and from here on the shortcuts are how the agent starts.
-
-Then, **before you build anything else, make one offer.** Ask it once, plainly, in your own words, close to this:
-
-> "Would you like your AI to learn how to build sales funnels and do marketing the way Jared does? I can install Jared's marketing files for you if you would like me to."
-
-**If yes:** install from https://github.com/jaredrhod/ai-marketing-skills, following that repo's own setup, which places the files in their vault, as an OpenCode skill, or both. Then give them the series that makes those files worth having: **The AI Marketing Machine**, https://youtube.com/playlist?list=PLdNHCeiXnovo . Frame the pair honestly: the files teach their AGENT the playbook, the series teaches THEM what to point it at.
-
-**If no:** "No problem, it is free and it is there whenever you want it." Move on. Ask once, never twice.
 
 **Why it happens HERE and not at the end:** the launcher test below opens a NEW session in their home folder, and that new window becomes the one they keep. Anything you ask after it is addressed to a window they have already moved on from. Every decision and every install has to land before that handoff.
 
